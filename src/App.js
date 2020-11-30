@@ -1,23 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
+import firestore from './api/firebase' 
+import {useCollectionData} from 'react-firebase-hooks/firestore'
+
 
 function App() {
+  
+  const testRef = firestore.collection('test')
+  // const test = testRef.orderBy('name')
+  const [yep, loading, error] = useCollectionData(testRef)
+  console.log(yep)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {loading && <div>loading</div>}
+      {yep && yep.map(msg => {
+        return <p>{msg.name}</p>
+      })}
     </div>
   );
 }
